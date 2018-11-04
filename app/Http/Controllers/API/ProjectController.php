@@ -41,34 +41,47 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        return $project;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $request->validate([
+            'title'         => 'string|required|min:4|max:255',
+            'description'   => 'sometimes|nullable|string'
+        ]);
+
+        $project->update($request->only([
+            'title',
+            'description'
+        ]));
+
+        return $project;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        // TODO: Remove all related images and all other data related to the project
+        // $project->images->delete();
+
+        $project->delete();
     }
 }
