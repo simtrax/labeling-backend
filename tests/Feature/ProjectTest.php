@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 
 use App\Project;
 
@@ -23,7 +24,7 @@ class ProjectTest extends TestCase
 				[
 					'id',
 					'title',
-					'description',
+					'description'
 				],
 			]);
     }
@@ -40,14 +41,16 @@ class ProjectTest extends TestCase
             ->assertJsonStructure([
                 'id',
                 'title',
-                'description',
+                'description'
             ]);
     }
 
     /** @test */
     public function can_create_project()
     {
-		$project = factory(Project::class)->make();
+        Storage::fake('test');
+
+        $project = factory(Project::class)->make();
         
         $response = $this->json(
 			'POST',

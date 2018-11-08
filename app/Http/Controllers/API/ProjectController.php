@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 use App\Project;
 
@@ -32,10 +33,14 @@ class ProjectController extends Controller
             'description'   => 'sometimes|nullable|string'
         ]);
 
-        return Project::create($request->only([
+        $project = Project::create($request->only([
             'title',
             'description'
         ]));
+
+        Storage::makeDirectory('projects/' . $project->path);
+
+        return $project;
     }
 
     /**
