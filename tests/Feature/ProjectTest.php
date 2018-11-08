@@ -48,22 +48,26 @@ class ProjectTest extends TestCase
     /** @test */
     public function can_create_project()
     {
-        Storage::fake('test');
-
         $project = factory(Project::class)->make();
         
         $response = $this->json(
 			'POST',
 			'/api/projects',
 			$project->toArray()
-		);
-		
+        );
+        
 		$response
 			->assertStatus(201)
 			->assertJsonFragment([
 				'title'		    => $project->title,
 				'description' 	=> $project->description,
             ]);
+
+        $project = Project::first();
+
+        Storage::assertExists('/projects/' . $project->path);
+
+        Storage::deleteDirectory('/projects/' . $project->path);
     }
 
     /** @test */
@@ -77,7 +81,7 @@ class ProjectTest extends TestCase
 			[
                 'description' => $project->description
             ]
-		);
+        );
 		
 		$response->assertStatus(422);
     }

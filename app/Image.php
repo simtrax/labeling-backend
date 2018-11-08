@@ -11,7 +11,7 @@ class Image extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['path', 'project_id'];
 
     /**
      * Get the project that this image belongs to.
