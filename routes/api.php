@@ -18,6 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResources([
-    'projects' => 'API\ProjectController',
-    'images' => 'API\ImageController'
+    'projects'      => 'API\ProjectController',
+    'images'        => 'API\ImageController',
+    'labels'        => 'API\LabelController',
 ]);
+
+Route::post('/projects/{project}/labels', 'API\Project\LabelController@store');
+Route::post('/projects/{project}/detections', 'API\Project\DetectionController@store');
