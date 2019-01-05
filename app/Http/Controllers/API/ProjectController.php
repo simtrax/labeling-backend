@@ -38,7 +38,7 @@ class ProjectController extends Controller
             'description'
         ]));
 
-        Storage::makeDirectory('projects/' . $project->path);
+        Storage::disk('projects')->makeDirectory($project->path);
 
         return $project;
     }

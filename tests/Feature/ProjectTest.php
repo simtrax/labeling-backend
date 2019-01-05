@@ -65,9 +65,9 @@ class ProjectTest extends TestCase
 
         $project = Project::first();
 
-        Storage::assertExists('/projects/' . $project->path);
+        Storage::disk('projects')->assertExists($project->path);
 
-        Storage::deleteDirectory('/projects/' . $project->path);
+        Storage::disk('projects')->deleteDirectory($project->path);
     }
 
     /** @test */

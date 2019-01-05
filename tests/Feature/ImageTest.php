@@ -33,7 +33,9 @@ class ImageTest extends TestCase
 
         $image = Image::first();
 
-        Storage::assertExists($image->path);
+        Storage::disk('projects')->assertExists($image->path);
+
+        Storage::disk('projects')->deleteDirectory($project->path);
     }
 
 }

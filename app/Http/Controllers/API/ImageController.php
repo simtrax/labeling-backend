@@ -36,7 +36,7 @@ class ImageController extends Controller
 
         $project = Project::find($request->project_id);
 
-        $path = $request->file('file')->store('projects/' . $project->path . '/images');
+        $path = $request->file('file')->store($project->path . '/images', 'projects');
 
         $image = $project->images()
         ->create([
@@ -45,6 +45,7 @@ class ImageController extends Controller
 
         // Storage::makeDirectory('images/' . $image->path);
 
+        // TODO: Return image
         // return $image;
     }
 
