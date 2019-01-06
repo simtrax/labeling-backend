@@ -23,11 +23,7 @@ class Detection extends Model
     {
         parent::boot();
         static::creating(function($model) {
-
-            // if(isset($model->geom)) {
-                $model->setAttribute('geom',  \DB::raw('ST_GeomFromGeoJSON("{\'type\':\'Point\',\'coordinates\':[-48.23456,20.12345]}")') );
-            // }
-
+            $model->setAttribute('geom',  \DB::raw('ST_GeomFromGeoJSON("{\'type\':\'Point\',\'coordinates\':[-48.23456,20.12345]}")') );
         });
     }
 

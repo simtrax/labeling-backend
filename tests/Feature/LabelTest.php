@@ -19,7 +19,6 @@ class LabelTest extends TestCase
         $labelData = [
             'number'		=> 1,
             'title'		    => 'label-title',
-            'project_id'	=> $project->id,
         ];
         
         $response = $this->json(

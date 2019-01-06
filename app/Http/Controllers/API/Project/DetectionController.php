@@ -30,18 +30,16 @@ class DetectionController extends Controller
     {
         $request->validate([
             'label_id'      => 'required|integer|exists:labels,id',
-            'geojson'       => 'required|json',
+            'geom'          => 'required|json',
         ]);
 
-        // Raw Query to create a detection, 
-        // or override the model create method.
+        \DB::insert('INSERT INTO detections (label_id, project_id, geom) values (?, ?, ST_SetSRID(ST_GeomFromGeoJSON(?), 4326) )', [
+            $request->label_id, 
+            $project->id,
+            $request->geom
+        ]);
 
-        // dd($request->all());
-
-        return Detection::create($request->only([
-            'label_id',
-            'geojson',
-        ]) + ['project_id' => $project->id]);
+        return Detection::latest()->first();
     }
 
     /**
