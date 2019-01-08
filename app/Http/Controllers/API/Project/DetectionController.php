@@ -18,6 +18,21 @@ class DetectionController extends Controller
     public function index()
     {
         //
+
+        /**
+         * 
+         
+            SELECT 'FeatureCollection' AS type, array_to_json(array_agg(f)) AS features
+            FROM (SELECT 'Feature' AS type
+            , ST_AsGeoJSON(ST_Transform(d.geom,4326))::json AS geometry
+            , row_to_json((SELECT l FROM (SELECT
+                    d.id
+                ) AS l
+            )) AS properties
+            FROM detections AS d WHERE project_id = 1) AS f
+
+         * 
+         */
     }
 
     /**

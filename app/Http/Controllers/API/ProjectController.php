@@ -84,9 +84,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        // TODO: Remove all related images and all other data related to the project
-        // $project->images->delete();
-
         $project->delete();
+
+        Storage::disk('projects')->deleteDirectory($project->path);
     }
 }
