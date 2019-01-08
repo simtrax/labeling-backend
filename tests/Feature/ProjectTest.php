@@ -134,7 +134,6 @@ class ProjectTest extends TestCase
         );
 
         $project = Project::first();
-
         Storage::disk('projects')->assertExists($project->path);
 
         $label = $project->labels()->create([
