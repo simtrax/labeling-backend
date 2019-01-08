@@ -34,4 +34,20 @@ class Project extends Model
         return $this->hasMany(Image::class);
     }
 
+    /**
+     * Get the labels that belongs to this project.
+     */
+    public function labels()
+    {
+        return $this->hasMany(Label::class);
+    }
+
+    /**
+     * Get the detections that belongs to this project.
+     */
+    public function detections()
+    {
+        return $this->hasMany(Detection::class);
+    }
+
 }
