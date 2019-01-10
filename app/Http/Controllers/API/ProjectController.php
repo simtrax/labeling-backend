@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
+use App\Http\Requests\CreateProjectRequest;
+use App\Jobs\CreateTilesJob;
 use App\Project;
 
 class ProjectController extends Controller
@@ -26,19 +28,22 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateProjectRequest $request)
     {
-        $request->validate([
-            'title'         => 'string|required|min:4|max:255',
-            'description'   => 'sometimes|nullable|string'
+        $fileName = (string) \Uuid::generate(4);
+
+        $project = Project::create([
+            'title'         => $request->title,
+            'description'   => $request->description,
+            'minZoom'       => $request->minZoom,
+            'maxZoom'       => $request->maxZoom,
+            'geotif'        => $fileName
         ]);
 
-        $project = Project::create($request->only([
-            'title',
-            'description'
-        ]));
-
         Storage::disk('projects')->makeDirectory($project->path);
+        $path = $request->file->storeAs($project->path, $fileName, 'projects');
+
+        CreateTilesJob::dispatch($project);
 
         return $project;
     }

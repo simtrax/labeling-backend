@@ -6,6 +6,9 @@ $factory->define(App\Project::class, function (Faker $faker) {
 
     return [
         'title' => $faker->text(rand(10,15)),
-        'description' => $faker->text(rand(50,100))
+        'description' => $faker->text(rand(50,100)),
+        'minZoom' => rand(10, 20),
+        'maxZoom' => rand(21, 24),
+        'geotif' => $faker->uuid(),
     ];
 });

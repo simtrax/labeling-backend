@@ -6,6 +6,10 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Queue;
+
+use App\Jobs\CreateTilesJob;
 
 use App\Project;
 
@@ -48,12 +52,19 @@ class ProjectTest extends TestCase
     /** @test */
     public function can_create_project()
     {
+        Queue::fake();
+        Queue::assertNothingPushed();
+
+        $file = UploadedFile::fake()->image('geotif.tif');
+
         $project = factory(Project::class)->make();
         
         $response = $this->json(
 			'POST',
 			'/api/projects',
-			$project->toArray()
+			$project->toArray() + [
+                'file' => $file
+            ]
         );
         
 		$response
@@ -65,7 +76,12 @@ class ProjectTest extends TestCase
 
         $project = Project::first();
 
+        Queue::assertPushed(CreateTilesJob::class, function ($job) use ($project) {
+            return $job->project->id === $project->id;
+        });
+
         Storage::disk('projects')->assertExists($project->path);
+        Storage::disk('projects')->assertExists($project->path . '/' . $project->geotif);
 
         Storage::disk('projects')->deleteDirectory($project->path);
     }

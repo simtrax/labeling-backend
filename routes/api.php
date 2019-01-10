@@ -25,3 +25,5 @@ Route::apiResources([
 
 Route::post('/projects/{project}/labels', 'API\Project\LabelController@store');
 Route::post('/projects/{project}/detections', 'API\Project\DetectionController@store');
+
+Route::post('/projects/{project}/tiles', 'API\Project\TileController@store');
