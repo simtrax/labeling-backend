@@ -19,7 +19,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return Project::all();
+        return Project::orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -37,7 +37,8 @@ class ProjectController extends Controller
             'description'   => $request->description,
             'minZoom'       => $request->minZoom,
             'maxZoom'       => $request->maxZoom,
-            'geotif'        => $fileName
+            'geotif'        => $fileName,
+            'status'        => 'queue'
         ]);
 
         Storage::disk('projects')->makeDirectory($project->path);

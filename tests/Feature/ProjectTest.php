@@ -76,6 +76,8 @@ class ProjectTest extends TestCase
 
         $project = Project::first();
 
+		$this->assertEquals($project->status, 'queue');
+
         Queue::assertPushed(CreateTilesJob::class, function ($job) use ($project) {
             return $job->project->id === $project->id;
         });

@@ -1,0 +1,84 @@
+<template>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="project in projects" :key="project.íd">
+                    <td v-text="project.title"></td>
+                    <td v-text="project.description"></td>
+                    <td v-text="getProjectStatus(project.status)"></td>
+                    <td>
+                        <button class="btn btn-danger" @click="deleteProject(project)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<script>
+    export default {
+
+        name: 'project-index',
+        
+        data() {
+            return {
+                projects: []
+            }
+        },
+
+        mounted() {
+            this.fetchProjects()
+            
+            setInterval(() => {
+                this.fetchProjects()
+            }, 10000);
+        },
+
+        methods: {
+            
+            fetchProjects() {
+                axios.get('/api/projects')
+                .then(response => {
+                    this.projects = response.data
+                })
+            },
+
+            getProjectStatus(status) {
+                switch (status) {
+                    case 'queue':
+                        return 'Waiting ..'
+                        break;
+                    case 'processing':
+                        return 'Processing ..'
+                        break;
+                    case 'finished':
+                        return 'Done'
+                        break;
+                
+                    default:
+                        return ''
+                        break;
+                }
+            },
+
+            deleteProject(project) {
+                if(confirm('This action is permanent')) {
+                    axios.delete('/api/projects/' + project.id)
+                    .then(response => {
+                        this.fetchProjects()
+                    })
+                }
+            }
+
+        }
+        
+    }
+</script>

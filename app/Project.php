@@ -22,7 +22,7 @@ class Project extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'description', 'minZoom', 'maxZoom', 'path', 'geotif'];
+    protected $fillable = ['title', 'description', 'minZoom', 'maxZoom', 'path', 'geotif', 'status'];
 
     protected $hidden = ['path'];
 

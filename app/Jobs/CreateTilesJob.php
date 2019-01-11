@@ -37,8 +37,12 @@ class CreateTilesJob implements ShouldQueue
         $filePath = Storage::disk('projects')->path($this->project->path . "/" . $this->project->geotif);
         $outputFolderPath = Storage::disk('projects')->path($this->project->path . "/tiles");
 
-        exec("gdal2tiles.py {$filePath} {$outputFolderPath} -z {$this->project->minZoom}-{$this->project->maxZoom} -s EPSG:32633", $out);
+        $this->project->update(['status' => 'processing']);
 
+        $numCores = env('NUM_PROCESSING_CORES', '2');
+        
+        exec("gdal2tiles.py {$filePath} {$outputFolderPath} -z {$this->project->minZoom}-{$this->project->maxZoom} --processes={$numCores} -s EPSG:32633", $out);
+        
         if($out) {
             Storage::disk('projects')->delete([
                 $this->project->path . "/tiles/googlemaps.html",
@@ -47,5 +51,7 @@ class CreateTilesJob implements ShouldQueue
                 $this->project->path . "/tiles/tilemapresource.xml",
             ]);
         }
+
+        $this->project->update(['status' => 'finished']);
     }
 }
