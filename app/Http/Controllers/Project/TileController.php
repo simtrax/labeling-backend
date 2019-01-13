@@ -22,10 +22,13 @@ class TileController extends Controller
      */
     public function show(Project $project, int $zoom, int $x, int $y)
     {
-        if($file = Storage::disk('projects')->get("{$project->path}/tiles/{$zoom}/{$x}/{$y}.png")) {
+        $tilePath = $project->path . "/tiles/{$zoom}/{$x}/{$y}.png";
+        if(Storage::disk('projects')->exists($tilePath)) {
+            $file = Storage::disk('projects')->get($tilePath);
+            
             return \Image::make($file)->response('png');
         } else {
-            return abort(404, 'Tile not found');
+            return \Image::make(public_path('transparent.png'))->response('png');
         }
     }
 

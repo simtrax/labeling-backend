@@ -34,6 +34,9 @@ class TileTest extends TestCase
         $response->assertStatus(200);
 
         Storage::disk('projects')->deleteDirectory($project->path);
+
+
+        // /22/2251007/2881620.png
     }
 
 }

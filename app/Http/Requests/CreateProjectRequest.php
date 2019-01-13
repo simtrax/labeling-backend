@@ -26,7 +26,7 @@ class CreateProjectRequest extends FormRequest
         return [
             'title'         => 'string|required|min:4|max:255',
             'description'   => 'sometimes|nullable|string',
-            'minZoom'       => 'required|integer|min:10|max:20|lt:maxZoom',
+            'minZoom'       => 'required|integer|min:10|max:15|lt:maxZoom',
             'maxZoom'       => 'required|integer|min:18|max:24|gt:minZoom',
             'file'          => 'required|file'
         ];

@@ -30,7 +30,7 @@ class ProjectController extends Controller
      */
     public function store(CreateProjectRequest $request)
     {
-        $fileName = (string) \Uuid::generate(4);
+        $fileName = (string) \Uuid::generate(4) . '.tif';
 
         $project = Project::create([
             'title'         => $request->title,

@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
 
         \File::cleanDirectory(storage_path() . '/app/projects/');
+        \File::cleanDirectory(storage_path() . '/app/tmp/');
     }
 }

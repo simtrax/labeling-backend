@@ -20,6 +20,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::view('/projects', 'projects')->name('projects');
+Route::resource('/projects', 'ProjectController')->only(['index', 'show', 'create']);
 
 Route::get('/projects/{project}/tiles/{zoom}/{x}/{y}', 'Project\TileController@show');

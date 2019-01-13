@@ -15,7 +15,8 @@
                     <td v-text="project.description"></td>
                     <td v-text="getProjectStatus(project.status)"></td>
                     <td>
-                        <button class="btn btn-danger" @click="deleteProject(project)">Delete</button>
+                        <a :href="'/projects/' + project.id" class="btn btn-primary">View map</a>
+                        <button class="btn btn-danger float-right" @click="deleteProject(project)">Delete</button>
                     </td>
                 </tr>
             </tbody>

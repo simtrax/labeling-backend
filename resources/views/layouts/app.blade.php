@@ -34,7 +34,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
 
-                        <a class="nav-link" href="{{ route('projects') }}">{{ __('Projects') }}</a>
+                        <a class="nav-link" href="{{ url('projects') }}">{{ __('Projects') }}</a>
 
                     </ul>
 
