@@ -28,50 +28,6 @@
 
         <vue-dropzone id="dropzone" v-on:vdropzone-sending="sendingEvent" v-on:vdropzone-success="projectCreated" :options="dropzoneOptions">
         </vue-dropzone>
-
-        <!-- <form @submit="postProject()" enctype="multipart/form-data"> -->
-
-
-        <!-- </form> -->
-        <!-- {!! Form::open(array('route' => 'projects.store', 'class' => 'form-horizontal', 'files' => true)) !!}
-            
-            <div class="form-group {{ $errors->has('description') ? 'has-error' : '' }}">
-                <label for="description">Description</label>
-                {!!Form::textarea('description', old('description'), array('class' => 'form-control'))!!}
-                
-                @include('helpers.form-errors', ['type' => 'description'])
-            </div>
-            
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group {{ $errors->has('minZoom') ? 'has-error' : '' }}">
-                        <label for="minZoom">Minimum tile zoom</label>
-                        {!!Form::text('minZoom', old('minZoom'), array('class' => 'form-control'))!!}
-                        
-                        @include('helpers.form-errors', ['type' => 'minZoom'])
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group {{ $errors->has('maxZoom') ? 'has-error' : '' }}">
-                        <label for="maxZoom">Maximum tile zoom</label>
-                        {!!Form::text('maxZoom', old('maxZoom'), array('class' => 'form-control'))!!}
-                        
-                        @include('helpers.form-errors', ['type' => 'maxZoom'])
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="file">GeoTif file</label>
-                {!! Form::file('file', ['multiple' => true, 'class' => 'form-control-file']) !!}
-                
-                @include('helpers.form-errors', ['type' => 'file'])
-            </div>
-
-            <button type="submit" class="btn btn-primary publishtourbutt2">
-                Save Photos
-            </button>
-        {!! Form::close() !!} -->
     </div>
 </template>
 
@@ -95,9 +51,6 @@
                 maxZoom: 24,
                 dropzoneOptions: {
                     url: '/api/projects',
-                    headers: { 
-                        // "Authorization": "Bearer " + this.$auth.token()
-                    },
                     acceptedFiles: "image/*",
                     createImageThumbnails: false,
                     dictDefaultMessage: "Drag a .tif file here"
@@ -106,7 +59,7 @@
         },
 
         mounted() {
-            
+
         },
 
         methods: {

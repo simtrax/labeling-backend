@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Object detection backend</title>
+        <title>Labeling backend</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    TF object detection backend
+                    Labeling backend
                 </div>
             </div>
         </div>
