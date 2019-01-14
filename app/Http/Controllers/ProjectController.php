@@ -69,4 +69,14 @@ class ProjectController extends Controller
         return view('projects.create');
     }
 
+    /**
+     * Show the detection page
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function detection(Project $project)
+    {
+        return view('projects.detection', compact('project'));
+    }
+
 }

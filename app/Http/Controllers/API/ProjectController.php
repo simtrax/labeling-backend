@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Http\Requests\CreateProjectRequest;
 use App\Jobs\CreateTilesJob;
+use App\Jobs\CopyDetectionFilesJob;
 use App\Project;
 
 class ProjectController extends Controller
@@ -19,7 +20,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return Project::orderBy('created_at', 'desc')->get();
+        return Project::withCount('detections')->orderBy('created_at', 'desc')->get();
     }
 
     /**
@@ -45,7 +46,8 @@ class ProjectController extends Controller
         $path = $request->file->storeAs($project->path, $fileName, 'projects');
 
         CreateTilesJob::dispatch($project);
-
+        CopyDetectionFilesJob::dispatch($project);
+            
         return $project;
     }
 

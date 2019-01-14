@@ -5,6 +5,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Description</th>
+                    <th># Detections</th>
                     <th>Status</th>
                     <th></th>
                 </tr>
@@ -13,9 +14,11 @@
                 <tr v-for="project in projects" :key="project.íd">
                     <td v-text="project.title"></td>
                     <td v-text="project.description"></td>
+                    <td v-text="project.detections_count"></td>
                     <td v-text="getProjectStatus(project.status)"></td>
                     <td>
-                        <a :href="'/projects/' + project.id" class="btn btn-primary">View map</a>
+                        <a :href="'/projects/' + project.id" class="btn btn-primary" v-if="project.detections_count">View map</a>
+                        <a :href="'/projects/' + project.id + '/detection'" class="btn btn-primary" v-else>Detect objects</a>
                         <button class="btn btn-danger float-right" @click="deleteProject(project)">Delete</button>
                     </td>
                 </tr>
