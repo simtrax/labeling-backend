@@ -72,8 +72,11 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $request->validate([
-            'title'         => 'string|required|min:4|max:255',
-            'description'   => 'sometimes|nullable|string'
+            'title'         => 'required|string|min:4|max:255',
+            'description'   => 'sometimes|nullable|string',
+            'darknetCfg'    => 'sometimes|nullable|string',
+            'darknetNames'  => 'sometimes|nullable|string',
+            'darknetData'   => 'sometimes|nullable|string',
         ]);
 
         $project->update($request->only([
@@ -81,7 +84,17 @@ class ProjectController extends Controller
             'description'
         ]));
 
-        return $project;
+        if($request->has('darknetCfg')) {
+            Storage::disk('projects')->put($project->path . '/cfg/yolo.cfg', $request->darknetCfg); 
+        }
+        if($request->has('darknetNames')) {
+            Storage::disk('projects')->put($project->path . '/data/obj.data', $request->darknetNames); 
+        }
+        if($request->has('darknetData')) {
+            Storage::disk('projects')->put($project->path . '/data/obj.names', $request->darknetData); 
+        }
+        
+        return $project->fresh();
     }
 
     /**

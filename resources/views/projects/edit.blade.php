@@ -6,11 +6,11 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    Detect objects in project: <strong>{{$project->title}}</strong>
+                    Edit project: <strong>{{$project->title}}</strong>
                 </div>
 
                 <div class="card-body">
-                    <project-detection :project="{{$project}}"></project-detection>
+                <project-edit :project="{{$project}}"></project-edit>
                 </div>
             </div>
         </div>

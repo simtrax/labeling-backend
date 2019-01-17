@@ -113,7 +113,9 @@ class ProjectTest extends TestCase
 		$response = $this->json(
 			'PATCH',
 			'/api/projects/' . $project->id,
-			$newProjectInfo->toArray()
+			$newProjectInfo->toArray() + [
+                
+            ]
 		);
 
 		$response
@@ -121,7 +123,46 @@ class ProjectTest extends TestCase
 			->assertJsonFragment([
 				'title'		    => $newProjectInfo->title,
 				'description' 	=> $newProjectInfo->description,
-			]);
+            ]);
+            
+        Storage::disk('projects')->deleteDirectory($project->path);
+	}
+
+    /** @test */
+    public function can_update_a_projects_darknet_config_files()
+	{
+		$project = factory(Project::class)->create();
+		$newProjectInfo = factory(Project::class)->make();
+
+		$response = $this->json(
+			'PATCH',
+			'/api/projects/' . $project->id,
+			$newProjectInfo->toArray() + [
+                'darknetCfg'    => 'Some random text 1', 
+                'darknetNames'  => 'Some random text 2', 
+                'darknetData'   => 'Some random text 3'
+            ]
+		);
+
+		$response
+			->assertStatus(200)
+			->assertJsonFragment([
+				'title'		        => $newProjectInfo->title,
+				'description' 	    => $newProjectInfo->description,
+				'darknetCfgFile'	=> 'Some random text 1',
+				'darknetDataFile'	=> 'Some random text 2',
+				'darknetNamesFile'	=> 'Some random text 3',
+            ]);
+
+        $cfg = Storage::disk('projects')->get($project->path . '/cfg/yolo.cfg'); 
+        $data = Storage::disk('projects')->get($project->path . '/data/obj.data'); 
+        $names = Storage::disk('projects')->get($project->path . '/data/obj.names'); 
+
+        $this->assertEquals($cfg, 'Some random text 1');
+        $this->assertEquals($data, 'Some random text 2');
+        $this->assertEquals($names, 'Some random text 3');
+
+        Storage::disk('projects')->deleteDirectory($project->path);
 	}
 
     /** @test */
@@ -143,13 +184,21 @@ class ProjectTest extends TestCase
     /** @test */
     public function can_delete_a_project()
 	{
+        Queue::fake();
+        Queue::assertNothingPushed();
+
+        $file = UploadedFile::fake()->image('geotif.tif');
+
         $project = factory(Project::class)->make();
-        
+        // dd($project);
         $response = $this->json(
 			'POST',
 			'/api/projects',
-			$project->toArray()
+			$project->toArray() + [
+                'file' => $file
+            ]
         );
+		$response->assertStatus(201);
 
         $project = Project::first();
         Storage::disk('projects')->assertExists($project->path);
@@ -174,7 +223,7 @@ class ProjectTest extends TestCase
 		
 		$response->assertStatus(200);
 		
-		$this->assertDatabaseMissing('projects', $project->toArray());
+		$this->assertDatabaseMissing('projects', array_except($project->toArray(), ['darknetCfgFile', 'darknetDataFile', 'darknetNamesFile']));
         $this->assertDatabaseMissing('labels', $label->toArray());
         $this->assertDatabaseMissing('detections', $detection->toArray());
         

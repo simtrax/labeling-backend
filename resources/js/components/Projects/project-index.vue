@@ -17,9 +17,9 @@
                     <td v-text="project.detections_count"></td>
                     <td v-text="getProjectStatus(project.status)"></td>
                     <td>
-                        <a :href="'/projects/' + project.id" class="btn btn-primary" v-if="project.detections_count">View map</a>
-                        <a :href="'/projects/' + project.id + '/detection'" class="btn btn-primary" v-else>Detect objects</a>
-                        <button class="btn btn-danger float-right" @click="deleteProject(project)">Delete</button>
+                        <button class="btn btn-light float-right" @click="deleteProject(project)">Delete</button>
+                        <a :href="'/projects/' + project.id + '/edit'" class="btn btn-light float-right mr-2">Edit</a>
+                        <a :href="'/projects/' + project.id" class="btn btn-light float-right mr-2">View map</a>
                     </td>
                 </tr>
             </tbody>

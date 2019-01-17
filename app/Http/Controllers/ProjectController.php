@@ -70,13 +70,17 @@ class ProjectController extends Controller
     }
 
     /**
-     * Show the detection page
+     * Show the edit project page
      *
      * @return \Illuminate\Http\Response
      */
-    public function detection(Project $project)
+    public function edit(Project $project)
     {
-        return view('projects.detection', compact('project'));
+        $cfg = Storage::disk('projects')->get($project->path . '/cfg/yolo.cfg'); 
+        $data = Storage::disk('projects')->get($project->path . '/data/obj.data'); 
+        $names = Storage::disk('projects')->get($project->path . '/data/obj.names'); 
+
+        return view('projects.edit', compact('project', 'cfg', 'data', 'names'));
     }
 
 }

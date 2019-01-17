@@ -18,6 +18,8 @@ class Project extends Model
         });
     }
 
+    protected $appends = ['darknetCfgFile', 'darknetNamesFile', 'darknetDataFile'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -49,6 +51,36 @@ class Project extends Model
     public function detections()
     {
         return $this->hasMany(Detection::class);
+    }
+
+    public function getDarknetCfgFileAttribute()
+    {
+        $path = $this->path . '/cfg/yolo.cfg';
+        if(Storage::disk('projects')->exists($path)) {
+            return Storage::disk('projects')->get($path); 
+        }
+
+        return '';
+    }
+
+    public function getDarknetNamesFileAttribute()
+    {
+        $path = $this->path . '/data/obj.names';
+        if(Storage::disk('projects')->exists($path)) {
+            return Storage::disk('projects')->get($path); 
+        }
+
+        return '';
+    }
+
+    public function getDarknetDataFileAttribute()
+    {
+        $path = $this->path . '/data/obj.data';
+        if(Storage::disk('projects')->exists($path)) {
+            return Storage::disk('projects')->get($path); 
+        }
+
+        return '';
     }
 
 }
