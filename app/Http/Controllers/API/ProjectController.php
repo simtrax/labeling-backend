@@ -43,6 +43,7 @@ class ProjectController extends Controller
         ]);
 
         Storage::disk('projects')->makeDirectory($project->path);
+        Storage::disk('projects')->makeDirectory($project->path . '/models');
         $path = $request->file->storeAs($project->path, $fileName, 'projects');
 
         CreateTilesJob::dispatch($project);

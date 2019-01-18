@@ -83,6 +83,7 @@ class ProjectTest extends TestCase
         });
 
         Storage::disk('projects')->assertExists($project->path);
+        Storage::disk('projects')->assertExists($project->path . '/models');
         Storage::disk('projects')->assertExists($project->path . '/' . $project->geotif);
 
         Storage::disk('projects')->deleteDirectory($project->path);

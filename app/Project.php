@@ -53,6 +53,15 @@ class Project extends Model
         return $this->hasMany(Detection::class);
     }
 
+    /**
+     * Get the models that belongs to this project.
+     */
+    public function models()
+    {
+        return $this->hasMany(YoloModel::class)
+            ->orderBy('created_at', 'DESC');
+    }
+
     public function getDarknetCfgFileAttribute()
     {
         $path = $this->path . '/cfg/yolo.cfg';

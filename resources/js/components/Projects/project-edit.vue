@@ -1,9 +1,10 @@
 <template>
     <div>
 
-        <vue-dropzone id="dropzone" v-on:vdropzone-sending="sendingEvent" v-on:vdropzone-success="projectCreated" :options="dropzoneOptions">
-        </vue-dropzone><br>
+        <project-models :project-id="project.id"></project-models>
         
+        <h2>Change project config files</h2>
+
         <div class="form-group">
             <h3 for="data">obj.data file</h3>
             <textarea id="data" class="form-control" v-model="data"></textarea>
@@ -43,15 +44,15 @@
 
     import CodeMirror from 'codemirror';
     import 'codemirror/lib/codemirror.css';
-    import vue2Dropzone from 'vue2-dropzone'
-    import 'vue2-dropzone/dist/vue2Dropzone.min.css'
+
+    import ProjectModels from './project-models.vue'
 
     export default {
 
         name: 'project-detection',
 
         components: {
-            vueDropzone: vue2Dropzone
+            ProjectModels
         },
 
         props: ['project'],
@@ -65,12 +66,6 @@
                 cfgEditor: null,
                 namesEditor: null,
                 dataEditor: null,
-                dropzoneOptions: {
-                    url: '/api/projects',
-                    // acceptedFiles: "image/*",
-                    createImageThumbnails: false,
-                    dictDefaultMessage: "Drag a trained model file here"
-                },
             }
         },
 
@@ -85,7 +80,6 @@
             this.dataEditor = CodeMirror.fromTextArea(document.getElementById("data"), {
                 lineNumbers: true,
             });
-
         },
 
         computed: {
@@ -95,16 +89,6 @@
         },
 
         methods: {
-
-            sendingEvent (file, xhr, formData) {
-                formData.append('project_id', this.project.id);
-            },
-
-            projectCreated() {
-                setTimeout(() => {
-                    // location.href = '/projects'
-                }, 2000)
-            },
             
             goToCfgLine(lineNumber) {
                 var t = this.cfgEditor.charCoords({line: lineNumber, ch: 0}, "local").top; 
@@ -123,7 +107,7 @@
                 }).then(response => {
                     console.log(response.data);
                 })
-            }
+            },
 
         }
         

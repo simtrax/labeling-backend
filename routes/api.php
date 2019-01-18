@@ -20,10 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResources([
     'projects'      => 'API\ProjectController',
     'images'        => 'API\ImageController',
-    'labels'        => 'API\LabelController',
 ]);
 
 Route::post('/projects/{project}/labels', 'API\Project\LabelController@store');
 Route::post('/projects/{project}/detections', 'API\Project\DetectionController@store');
 
-Route::post('/projects/{project}/tiles', 'API\Project\TileController@store');
+Route::get('/projects/{project}/yolomodels', 'API\Project\YoloModelController@index');
+Route::post('/projects/{project}/yolomodels', 'API\Project\YoloModelController@store');
+Route::delete('/projects/{project}/yolomodels/{yolomodel}', 'API\Project\YoloModelController@destroy');
