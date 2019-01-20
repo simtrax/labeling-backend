@@ -28,15 +28,12 @@ class LabelController extends Controller
      */
     public function store(Project $project, Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'number'        => 'required|integer|min:1',
             'title'         => 'required|string|min:1|max:100',
         ]);
 
-        return Label::create($request->only([
-            'number',
-            'title',
-        ]) + ['project_id' => $project->id]);
+        return $project->labels()->create($validatedData);
     }
 
     /**

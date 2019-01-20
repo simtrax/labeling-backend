@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Log;
 
 use App\Project;
 
-class CreateTilesJob implements ShouldQueue
+class RunDarknetDetectionJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $project;
+    public $jobPath;
 
     /**
      * Create a new job instance.
@@ -35,14 +36,20 @@ class CreateTilesJob implements ShouldQueue
      */
     public function handle()
     {
+        $jobFolderName = (string) \Uuid::generate(4);
+
+        $this->jobPath = Storage::makeDirectory('detection/running_jobs/' . $jobFolderName);
+
+        // Move needed files to local folder
+
         $filePath = Storage::disk('projects')->path($this->project->geotif);
         $outputFolderPath = Storage::disk('projects')->path($this->project->path . "/tiles");
 
         $this->project->update(['status' => 'processing']);
 
-        $numCores = env('NUM_PROCESSING_CORES', '2');
+        // $numCores = env('NUM_PROCESSING_CORES', '2');
         
-        exec("gdal2tiles.py {$filePath} {$outputFolderPath} -z {$this->project->minZoom}-{$this->project->maxZoom} --processes={$numCores} -s EPSG:32633", $out);
+        // exec("gdal2tiles.py {$filePath} {$outputFolderPath} -z {$this->project->minZoom}-{$this->project->maxZoom} --processes={$numCores} -s EPSG:32633", $out);
         
         if($out) {
             Storage::disk('projects')->delete([
@@ -64,11 +71,12 @@ class CreateTilesJob implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        $this->project->update(['status' => 'failed-tile-creation']);
+        $this->project->update(['status' => 'failed-detection']);
         
-        Storage::disk('projects')->delete($this->project->path . "/tiles");
+        Storage::delete($this->jobPath);
 
-        Log::debug("Creating tiles for the project with id {$this->project->id} failed.");
+        Log::debug("Object detection for the project with id {$this->project->id} failed.");
         Log::error($exception->getMessage());
     }
+
 }

@@ -66,6 +66,9 @@
                     case 'finished':
                         return 'Done'
                         break;
+                    case 'failed-tile-creation':
+                        return 'Failed generating tiles'
+                        break;
                 
                     default:
                         return ''
