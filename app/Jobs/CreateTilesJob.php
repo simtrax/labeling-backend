@@ -34,7 +34,7 @@ class CreateTilesJob implements ShouldQueue
      */
     public function handle()
     {
-        $filePath = Storage::disk('projects')->path($this->project->path . "/" . $this->project->geotif);
+        $filePath = Storage::disk('projects')->path($this->project->geotif);
         $outputFolderPath = Storage::disk('projects')->path($this->project->path . "/tiles");
 
         $this->project->update(['status' => 'processing']);

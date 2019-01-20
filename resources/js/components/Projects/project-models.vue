@@ -7,10 +7,10 @@
             <input type="text" id="modelTitle" class="form-control" v-model="modelTitle">
         </div>
 
-        <vue-dropzone id="dropzone" v-on:vdropzone-sending="sendingEvent" v-on:vdropzone-success="modelUploaded" :options="dropzoneOptions">
+        <vue-dropzone id="dropzone" v-on:vdropzone-sending="sendingEvent" v-on:vdropzone-success="modelUploaded" :options="dropzoneOptions" ref="dropzone">
         </vue-dropzone><br>
 
-        <table class="table">
+        <table class="table" v-if="models.length">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -20,10 +20,14 @@
             <tbody>
                 <tr v-for="model in models" :key="model.id">
                     <td v-text="model.title"></td>
-                    <td></td>
+                    <td>
+                        <button class="btn btn-light float-right" @click="deleteModel(model)">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
+
+        <h4 v-else>There are no models linked to this project yet</h4>
 
         <hr>
 
@@ -72,6 +76,7 @@ export default {
             this.title = ''
 
             this.fetchModels()
+            this.$refs.dropzone.removeAllFiles()
         },
 
         fetchModels() {
@@ -79,6 +84,15 @@ export default {
             .then(response => {
                 this.models = response.data
             })
+        },
+
+        deleteModel(model) {
+            if(confirm('This action is permanent')) {
+                axios.delete('/api/projects/' + this.projectId + '/yolomodels/' + model.id)
+                .then(response => {
+                    this.fetchModels()
+                })
+            }
         }
 
     }

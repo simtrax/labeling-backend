@@ -31,7 +31,7 @@ class ProjectController extends Controller
 
 		Storage::put(
 			'tmp/' . $tmpName, 
-			Storage::disk('projects')->get($project->path . "/" . $project->geotif)
+			Storage::disk('projects')->get($project->geotif)
 		);
 
 		$filePath = storage_path() . '/app/tmp/' . $tmpName;
@@ -55,6 +55,8 @@ class ProjectController extends Controller
         );
         
         $detections = json_encode($detections[0], true);
+
+        Storage::delete('tmp/' . $tmpName);
 
         return view('projects.show', compact('project', 'geojson', 'detections'));
     }

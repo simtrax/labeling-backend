@@ -2,6 +2,8 @@
     <div>
 
         <project-models :project-id="project.id"></project-models>
+
+        <project-labels :project-id="project.id"></project-labels>
         
         <h2>Change project config files</h2>
 

@@ -24,6 +24,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Route::model('yolomodel', \App\YoloModel::class);
     }
 
     /**

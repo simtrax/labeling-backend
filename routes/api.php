@@ -22,7 +22,9 @@ Route::apiResources([
     'images'        => 'API\ImageController',
 ]);
 
+Route::get('/projects/{project}/labels', 'API\Project\LabelController@index');
 Route::post('/projects/{project}/labels', 'API\Project\LabelController@store');
+Route::delete('/projects/{project}/labels/{label}', 'API\Project\LabelController@destroy');
 Route::post('/projects/{project}/detections', 'API\Project\DetectionController@store');
 
 Route::get('/projects/{project}/yolomodels', 'API\Project\YoloModelController@index');

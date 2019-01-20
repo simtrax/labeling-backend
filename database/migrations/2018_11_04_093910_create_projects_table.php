@@ -20,7 +20,7 @@ class CreateProjectsTable extends Migration
             $table->tinyInteger('minZoom');
             $table->tinyInteger('maxZoom');
             $table->string('status', 255)->nullable();
-            $table->string('geotif', 255);
+            $table->string('geotif', 255)->nullable();
             $table->string('path', 100);
 
             $table->timestamps();

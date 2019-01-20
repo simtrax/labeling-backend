@@ -76,11 +76,9 @@ class YoloModelController extends Controller
      * @param  \App\YoloModel  $yoloModel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
+    public function destroy(Project $project, YoloModel $model)
     {
-        $yoloModel = YoloModel::findOrFail($id);
-        
-        Storage::disk('projects')->delete($yoloModel->path);
-        $yoloModel->delete();
+        Storage::disk('projects')->delete($model->path);
+        $model->delete();
     }
 }

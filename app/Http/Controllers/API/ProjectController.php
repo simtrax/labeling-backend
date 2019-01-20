@@ -38,7 +38,6 @@ class ProjectController extends Controller
             'description'   => $request->description,
             'minZoom'       => $request->minZoom,
             'maxZoom'       => $request->maxZoom,
-            'geotif'        => $fileName,
             'status'        => 'queue'
         ]);
 
@@ -46,8 +45,12 @@ class ProjectController extends Controller
         Storage::disk('projects')->makeDirectory($project->path . '/models');
         $path = $request->file->storeAs($project->path, $fileName, 'projects');
 
-        CreateTilesJob::dispatch($project);
+        $project->update([
+            'geotif' => $path
+        ]);
+
         CopyDetectionFilesJob::dispatch($project);
+        CreateTilesJob::dispatch($project);
             
         return $project;
     }

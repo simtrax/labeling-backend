@@ -52,6 +52,7 @@
                 dropzoneOptions: {
                     url: '/api/projects',
                     acceptedFiles: "image/*",
+                    maxFilesize: 2000,
                     createImageThumbnails: false,
                     dictDefaultMessage: "Drag a .tif file here"
                 },
