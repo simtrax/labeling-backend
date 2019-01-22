@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateProjectRequest;
 use App\Jobs\CreateTilesJob;
 use App\Jobs\CopyDetectionFilesJob;
+use App\Jobs\RunDarknetDetectionJob;
 use App\Project;
+use App\YoloModel;
 
 class ProjectController extends Controller
 {
@@ -112,5 +114,20 @@ class ProjectController extends Controller
         $project->delete();
 
         Storage::disk('projects')->deleteDirectory($project->path);
+    }
+
+    /**
+     * Detect objects in this project
+     *
+     * @param  Project $project
+     * @return \Illuminate\Http\Response
+     */
+    public function detect(Project $project)
+    {
+        $project->detections()->delete();
+        
+        $project->update(['status' => 'queue']);
+
+        RunDarknetDetectionJob::dispatch($project, YoloModel::find(3));
     }
 }

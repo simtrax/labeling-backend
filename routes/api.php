@@ -22,6 +22,8 @@ Route::apiResources([
     'images'        => 'API\ImageController',
 ]);
 
+Route::post('/projects/{project}/detect', 'API\ProjectController@detect');
+
 Route::get('/projects/{project}/labels', 'API\Project\LabelController@index');
 Route::post('/projects/{project}/labels', 'API\Project\LabelController@store');
 Route::delete('/projects/{project}/labels/{label}', 'API\Project\LabelController@destroy');

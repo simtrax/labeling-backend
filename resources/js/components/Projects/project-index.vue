@@ -20,6 +20,7 @@
                         <button class="btn btn-light float-right" @click="deleteProject(project)">Delete</button>
                         <a :href="'/projects/' + project.id + '/edit'" class="btn btn-light float-right mr-2">Edit</a>
                         <a :href="'/projects/' + project.id" class="btn btn-light float-right mr-2">View map</a>
+                        <button class="btn btn-light float-right mr-2" @click="runDetection(project)">Detect objects</button>
                     </td>
                 </tr>
             </tbody>
@@ -81,6 +82,17 @@
                     axios.delete('/api/projects/' + project.id)
                     .then(response => {
                         this.fetchProjects()
+                    })
+                }
+            },
+
+            runDetection(project) {
+                if(confirm('This action will remove all previous detections')) {
+                    axios.post('/api/projects/' + project.id + '/detect')
+                    .then(response => {
+                        setTimeout(() => {
+                            this.fetchProjects()
+                        }, 1000)
                     })
                 }
             }
